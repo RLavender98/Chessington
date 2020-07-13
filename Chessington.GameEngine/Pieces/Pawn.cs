@@ -13,22 +13,25 @@ namespace Chessington.GameEngine.Pieces
         {
             var availableMoves = new List<Square>();
             Square currentSquare = board.FindPiece(this);
+            Square forwards = new Square();
+            Square twoForwards = new Square();
+            int startingRow = 0;
             if (this.Player == Player.White)
             {
-                Square forwards = Square.At(currentSquare.Row - 1, currentSquare.Col);
-                if (board.GetPiece(forwards) == null)
-                {
-                    availableMoves.Add(forwards);
-                }
+                forwards = Square.At(currentSquare.Row - 1, currentSquare.Col);
+                twoForwards = Square.At(currentSquare.Row - 2, currentSquare.Col);
+                startingRow = 7;
             }
             else if(this.Player == Player.Black)
             {
-                Square forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
-                if (board.GetPiece(forwards) == null)
-                {
-                    availableMoves.Add(forwards);
-                }
+                forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
+                twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
+                startingRow = 1;
             }
+            if (board.GetPiece(forwards) == null) 
+                availableMoves.Add(forwards);
+            if (board.GetPiece(twoForwards) == null && currentSquare.Row == startingRow) 
+                availableMoves.Add(twoForwards);
             return availableMoves;
         }
     }
