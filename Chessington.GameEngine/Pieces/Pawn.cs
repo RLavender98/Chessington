@@ -15,6 +15,13 @@ namespace Chessington.GameEngine.Pieces
         {
             var availableMoves = new List<Square>();
             Square currentSquare = board.FindPiece(this);
+            availableMoves.AddRange(GetPawnMoves(currentSquare));
+            return availableMoves;
+        }
+        
+        public List<Square> GetPawnMoves(Square currentSquare)
+        {    
+            var pawnMoves = new List<Square>();
             Square forwards = new Square();
             Square twoForwards = new Square();
             if (this.Player == Player.White)
@@ -28,10 +35,10 @@ namespace Chessington.GameEngine.Pieces
                 twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
             }
             
-            availableMoves.Add(forwards);
+            pawnMoves.Add(forwards);
             if (!HasThisPieceEverMoved) 
-                availableMoves.Add(twoForwards);
-            return availableMoves;
+                pawnMoves.Add(twoForwards);
+            return pawnMoves;
         }
     }
 }
