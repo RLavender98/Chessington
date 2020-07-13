@@ -24,15 +24,20 @@ namespace Chessington.GameEngine.Pieces
             var pawnMoves = new List<Square>();
             Square forwards = new Square();
             Square twoForwards = new Square();
+            List<Square> diagonals = new List<Square>();
             if (this.Player == Player.White)
             {
                 forwards = Square.At(currentSquare.Row - 1, currentSquare.Col);
                 twoForwards = Square.At(currentSquare.Row - 2, currentSquare.Col);
+                diagonals.Add(Square.At(currentSquare.Row - 1, currentSquare.Col-1));
+                diagonals.Add(Square.At(currentSquare.Row - 1, currentSquare.Col+1));
             }
             else if(this.Player == Player.Black)
             {
                 forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
                 twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
+                diagonals.Add(Square.At(currentSquare.Row + 1, currentSquare.Col-1));
+                diagonals.Add(Square.At(currentSquare.Row + 1, currentSquare.Col+1));
             }
 
             if (forwards.IsOnTheBoard())
@@ -43,6 +48,13 @@ namespace Chessington.GameEngine.Pieces
                         if(board.GetPiece(twoForwards) == null)
                             pawnMoves.Add(twoForwards);
                 }
+
+            foreach (var diagonal in diagonals)
+            {
+                if(diagonal.IsOnTheBoard())
+                    if(board.GetPiece(diagonal)!=null && board.GetPiece(diagonal).Player!=this.Player)
+                        pawnMoves.Add(diagonal);
+            }
             return pawnMoves;
             
         }
