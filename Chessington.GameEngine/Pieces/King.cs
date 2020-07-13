@@ -14,6 +14,7 @@ namespace Chessington.GameEngine.Pieces
             var moveGetter = new MoveGetter();
             Square currentSquare = board.FindPiece(this);
             availableMoves.AddRange(moveGetter.GetKingMoves(currentSquare));
+            availableMoves.RemoveAll(s => !s.IsOnTheBoard());
             return availableMoves;
         }
     }
