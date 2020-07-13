@@ -21,7 +21,7 @@ namespace Chessington.GameEngine.Pieces
                     availableMoves.Add(forwards);
                 }
             }
-            else if(this.Player == Player.White)
+            else if(this.Player == Player.Black)
             {
                 Square forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
                 if (board.GetPiece(forwards) == null)
