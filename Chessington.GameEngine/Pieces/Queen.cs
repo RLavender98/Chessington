@@ -16,6 +16,7 @@ namespace Chessington.GameEngine.Pieces
             var moveGetter = new MoveGetter();
             availableMoves.AddRange(moveGetter.GetLateralMoves(currentSquare));
             availableMoves.AddRange(moveGetter.GetDiagonalMoves(currentSquare));
+            availableMoves = availableMoves.FindAll(s => new Path(currentSquare, s).IsPathEmpty(board));
             return availableMoves;
         }
     }

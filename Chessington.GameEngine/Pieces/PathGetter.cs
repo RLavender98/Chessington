@@ -14,12 +14,12 @@ namespace Chessington.GameEngine.Pieces
             if (colDif == 0)
             {
                 if (rowDif > 0)
-                    for (int i = 1; i <= rowDif; i++)
+                    for (int i = 1; i < rowDif; i++)
                     {
                         path.Add(Square.At(from.Row + i, from.Col));
                     }
                 else
-                    for (int i = 1; i <= 0 - rowDif; i++)
+                    for (int i = 1; i < 0 - rowDif; i++)
                     {
                         path.Add(Square.At(from.Row - i, from.Col));
                     }
@@ -27,12 +27,12 @@ namespace Chessington.GameEngine.Pieces
             else if (rowDif == 0)
             {
                 if (colDif > 0)
-                    for (int i = 1; i <= colDif; i++)
+                    for (int i = 1; i < colDif; i++)
                     {
                         path.Add(Square.At(from.Row, from.Col + i));
                     }
                 else
-                    for (int i = 1; i <= 0 - colDif; i++)
+                    for (int i = 1; i < 0 - colDif; i++)
                     {
                         path.Add(Square.At(from.Row, from.Col - i));
                     }
@@ -40,12 +40,12 @@ namespace Chessington.GameEngine.Pieces
             else if (rowDif == colDif)
             {
                 if(rowDif>0)
-                    for (int i = 1; i <= rowDif; i++)
+                    for (int i = 1; i < rowDif; i++)
                     {
                         path.Add(Square.At(from.Row+i,from.Col+i));
                     }
                 else
-                    for (int i = 1; i <= 0-rowDif; i++)
+                    for (int i = 1; i < 0-rowDif; i++)
                     {
                         path.Add(Square.At(from.Row-i,from.Col-i));
                     }
@@ -53,12 +53,12 @@ namespace Chessington.GameEngine.Pieces
             else if (rowDif == 0-colDif)
             {
                 if(rowDif>0)
-                    for (int i = 1; i <= rowDif; i++)
+                    for (int i = 1; i < rowDif; i++)
                     {
                         path.Add(Square.At(from.Row+i,from.Col-i));
                     }
                 else
-                    for (int i = 1; i <= 0-rowDif; i++)
+                    for (int i = 1; i < 0-rowDif; i++)
                     {
                         path.Add(Square.At(from.Row-i,from.Col+i));
                     }

@@ -18,6 +18,7 @@ namespace Chessington.GameEngine.Pieces
             availableMoves.AddRange(GetPawnMoves(currentSquare));
             availableMoves.RemoveAll(s => !s.IsOnTheBoard());
             availableMoves = availableMoves.FindAll(s=>new Path(currentSquare,s).IsPathEmpty(board));
+            availableMoves.RemoveAll(s => board.GetPiece(s) != null);
             return availableMoves;
         }
         
