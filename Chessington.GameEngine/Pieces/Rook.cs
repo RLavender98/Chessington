@@ -21,7 +21,7 @@ namespace Chessington.GameEngine.Pieces
                 availableMoves.Add(Square.At(row,currentSquare.Col));
             }
 
-            availableMoves.Remove(currentSquare);
+            availableMoves.RemoveAll(s=>s==currentSquare);
             return availableMoves;
         }
     }
