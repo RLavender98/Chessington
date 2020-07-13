@@ -15,14 +15,11 @@ namespace Chessington.GameEngine.Pieces
         {
             var availableMoves = new List<Square>();
             Square currentSquare = board.FindPiece(this);
-            availableMoves.AddRange(GetPawnMoves(currentSquare));
-            availableMoves.RemoveAll(s => !s.IsOnTheBoard());
-            availableMoves = availableMoves.FindAll(s=>new Path(currentSquare,s).IsPathEmpty(board));
-            availableMoves.RemoveAll(s => board.GetPiece(s) != null);
+            availableMoves.AddRange(GetPawnMoves(currentSquare, board));
             return availableMoves;
         }
         
-        public List<Square> GetPawnMoves(Square currentSquare)
+        public List<Square> GetPawnMoves(Square currentSquare, Board board)
         {    
             var pawnMoves = new List<Square>();
             Square forwards = new Square();
@@ -37,10 +34,17 @@ namespace Chessington.GameEngine.Pieces
                 forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
                 twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
             }
-            pawnMoves.Add(forwards);
-            if (!HasThisPieceEverMoved) 
-                pawnMoves.Add(twoForwards);
+
+            if (forwards.IsOnTheBoard())
+                if (board.GetPiece(forwards) == null)
+                {
+                    pawnMoves.Add(forwards);  
+                    if (!HasThisPieceEverMoved && twoForwards.IsOnTheBoard()) 
+                        if(board.GetPiece(twoForwards) == null)
+                            pawnMoves.Add(twoForwards);
+                }
             return pawnMoves;
+            
         }
     }
 }
