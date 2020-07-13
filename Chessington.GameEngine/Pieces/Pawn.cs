@@ -27,9 +27,9 @@ namespace Chessington.GameEngine.Pieces
                 forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
                 twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
             }
-            if (board.GetPiece(forwards) == null) 
-                availableMoves.Add(forwards);
-            if (board.GetPiece(twoForwards) == null && !HasThisPieceEverMoved) 
+            
+            availableMoves.Add(forwards);
+            if (!HasThisPieceEverMoved) 
                 availableMoves.Add(twoForwards);
             return availableMoves;
         }
