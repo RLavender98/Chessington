@@ -98,35 +98,5 @@ namespace Chessington.GameEngine.Pieces
             diagonalMoves.RemoveAll(s=>s==currentSquare);
             return diagonalMoves;
         }
-
-        public List<Square> GetKnightMoves(Square currentSquare)
-        {
-            var availableMoves = new List<Square>();
-            foreach (int i in new[] {-2, 2})
-            {
-                foreach (int j in new[] {-1, 1})
-                {
-                    availableMoves.Add(Square.At(currentSquare.Row + i, currentSquare.Col + j));
-                    availableMoves.Add(Square.At(currentSquare.Row + j, currentSquare.Col + i));
-                }
-            }
-
-            return availableMoves;
-        }
-
-        public List<Square> GetKingMoves(Square currentSquare)
-        {
-            var availableMoves = new List<Square>();
-            foreach (int i in new[] {-1, 0, 1})
-            {
-                foreach (int j in new[] {-1, 0, 1})
-                {
-                    availableMoves.Add(Square.At(currentSquare.Row + i, currentSquare.Col + j));
-                }
-            }
-
-            availableMoves.Remove(currentSquare);
-            return availableMoves;
-        }
     }
 }
