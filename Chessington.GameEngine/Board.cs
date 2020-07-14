@@ -9,16 +9,19 @@ namespace Chessington.GameEngine
     {
         private readonly Piece[,] board;
         public Player CurrentPlayer { get; private set; }
-        public IList<Piece> CapturedPieces { get; private set; } 
+        public IList<Piece> CapturedPieces { get; private set; }
+        
+        public Move PreviousMove { get; set; }
 
         public Board()
             : this(Player.White) { }
 
         public Board(Player currentPlayer, Piece[,] boardState = null)
         {
-            board = boardState ?? new Piece[GameSettings.BoardSize, GameSettings.BoardSize]; 
+            board = boardState ?? new Piece[GameSettings.BoardSize, GameSettings.BoardSize];
             CurrentPlayer = currentPlayer;
             CapturedPieces = new List<Piece>();
+            PreviousMove = new Move();
         }
 
         public void AddPiece(Square square, Piece pawn)
@@ -56,7 +59,23 @@ namespace Chessington.GameEngine
             {
                 OnPieceCaptured(board[to.Row, to.Col]);
             }
+            //If the piece we are moving is a pawn performing en passant, we need to take other pawn.
+            if (board[from.Row, from.Col].GetType() == typeof(Pawn))
+            {
+                if (from.Col != to.Col && GetPiece(to) == null)
+                {
+                    int drow = 0;
+                    if (CurrentPlayer == Player.White)
+                        drow = 1;
+                    if (CurrentPlayer == Player.Black)
+                        drow = -1;
+                    OnPieceCaptured(board[to.Row + drow, to.Col]);
+                    board[to.Row + drow, to.Col] = null;
+                }
+            }
 
+            PreviousMove.From = from;
+            PreviousMove.To = to;
             //Move the piece and set the 'from' square to be empty.
             board[to.Row, to.Col] = board[from.Row, from.Col];
             board[from.Row, from.Col] = null;
