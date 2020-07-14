@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BoardTests.cs" />
     <Compile Include="Pieces\CheckTests.cs" />
+    <Compile Include="Pieces\EnPassantTests.cs" />
     <Compile Include="Pieces\KingTests.cs" />
     <Compile Include="Pieces\BishopTests.cs" />
     <Compile Include="Pieces\RookTests.cs" />
