@@ -56,6 +56,7 @@ namespace Chessington.GameEngine.Tests.Pieces
 
             moves.Should().NotContain(Square.At(3, 1));
         }
+        [Test]
         public void WhitePawns_CanNotTakeEnPassantIfItWasntPreviousMove()
         {
             var board = new Board(Player.Black);
@@ -74,6 +75,21 @@ namespace Chessington.GameEngine.Tests.Pieces
             var moves = whitePawn.GetAvailableMoves(board);
 
             moves.Should().NotContain(Square.At(3, 1));
+        }
+        
+        [Test]
+        public void WhenPerformingEnPassantMove_TakenPieceGetsTaken()
+        {
+            var board = new Board(Player.Black);
+            var whitePawn = new Pawn(Player.White);
+            var blackPawn = new Pawn(Player.Black);
+            board.AddPiece(Square.At(4, 0), whitePawn);
+            board.AddPiece(Square.At(2, 1), blackPawn);
+            
+            blackPawn.MoveTo(board, Square.At(4, 1));
+            whitePawn.MoveTo(board, Square.At(3, 1));
+            
+            board.GetPiece(Square.At(4,1)).Should().BeNull();
         }
     }
 }
