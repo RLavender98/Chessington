@@ -20,43 +20,44 @@ namespace Chessington.GameEngine.Pieces
         }
         
         public List<Square> GetPawnMoves(Square currentSquare, Board board)
-        {    
-            var pawnMoves = new List<Square>();
-            Square forwards = new Square();
-            Square twoForwards = new Square();
+        {
+            int drow = 0;
             List<Square> diagonals = new List<Square>();
             if (this.Player == Player.White)
-            {
-                forwards = Square.At(currentSquare.Row - 1, currentSquare.Col);
-                twoForwards = Square.At(currentSquare.Row - 2, currentSquare.Col);
-                diagonals.Add(Square.At(currentSquare.Row - 1, currentSquare.Col-1));
-                diagonals.Add(Square.At(currentSquare.Row - 1, currentSquare.Col+1));
-            }
+                drow = -1;
             else if(this.Player == Player.Black)
+                drow = 1;
+            var pawnMoves = new List<Square>();
+            TravelStep forwards = new TravelStep(0,drow);
+            TravelStep forwardsTwo = new TravelStep(0, drow + drow);
+            TravelStep forwardLeft = new TravelStep(-1, drow);
+            TravelStep forwardRight = new TravelStep(1,drow);
+            if (StepIsEmptyAndValid(forwards, currentSquare, board))
             {
-                forwards = Square.At(currentSquare.Row + 1, currentSquare.Col);
-                twoForwards = Square.At(currentSquare.Row + 2, currentSquare.Col);
-                diagonals.Add(Square.At(currentSquare.Row + 1, currentSquare.Col-1));
-                diagonals.Add(Square.At(currentSquare.Row + 1, currentSquare.Col+1));
-            }
-
-            if (forwards.IsOnTheBoard())
-                if (board.GetPiece(forwards) == null)
-                {
-                    pawnMoves.Add(forwards);  
-                    if (!HasThisPieceEverMoved && twoForwards.IsOnTheBoard()) 
-                        if(board.GetPiece(twoForwards) == null)
-                            pawnMoves.Add(twoForwards);
+                pawnMoves.Add(forwards.TravelFromSquare(currentSquare));
+                if(!this.HasThisPieceEverMoved && StepIsEmptyAndValid(forwardsTwo, currentSquare, board))
+                    pawnMoves.Add(forwardsTwo.TravelFromSquare(currentSquare));
                 }
-
-            foreach (var diagonal in diagonals)
-            {
-                if(diagonal.IsOnTheBoard())
-                    if(board.GetPiece(diagonal)!=null && board.GetPiece(diagonal).Player!=this.Player)
-                        pawnMoves.Add(diagonal);
-            }
+            if(StepLandsOnOpposingPieceAndIsValid(forwardLeft, currentSquare, board))
+                pawnMoves.Add(forwardLeft.TravelFromSquare(currentSquare));
+            if(StepLandsOnOpposingPieceAndIsValid(forwardRight,currentSquare,board))
+                pawnMoves.Add(forwardRight.TravelFromSquare(currentSquare));
             return pawnMoves;
             
+        }
+
+        private bool StepIsEmptyAndValid(TravelStep direction, Square currentSquare, Board board)
+        {
+            if (direction.TravelFromSquare(currentSquare).IsOnTheBoard())
+                return board.GetPiece(direction.TravelFromSquare(currentSquare)) == null;
+            return false;
+        }
+        private bool StepLandsOnOpposingPieceAndIsValid(TravelStep direction, Square currentSquare, Board board)
+        {
+            if (direction.TravelFromSquare(currentSquare).IsOnTheBoard())
+                return board.GetPiece(direction.TravelFromSquare(currentSquare)) != null &&
+                       board.GetPiece(direction.TravelFromSquare(currentSquare)).Player != this.Player;
+            return false;
         }
     }
 }
